@@ -1,0 +1,4 @@
+customtkinter
+CTkMessagebox
+numpy
+Pillow
