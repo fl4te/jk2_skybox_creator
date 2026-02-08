@@ -3,7 +3,7 @@
 block_cipher = None
 
 a = Analysis(
-    ['jk2_skybox_creator.py'],
+    ['skybox_architect.py'],
     pathex=[],
     binaries=[],
     datas=[('icon.ico', '.')],
@@ -36,7 +36,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='JK2SkyBoxCreator',
+    name='SkyBoxArchitect',
     debug=False,
     bootloader_ignore_signals=False,
     strip=True,
