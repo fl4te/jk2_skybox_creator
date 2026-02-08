@@ -4,7 +4,7 @@
 
 **A tool for converting equirectangular panoramas into cubemaps.**
 
-![SkyBox Architect Screenshot](https://i.ibb.co/B2RntchN/skybox-architect.gif)
+![SkyBox Architect Screenshot](https://i.ibb.co/B2wWfWbj/Bildschirmfoto-20260208-024707.png)
 
 ---
 
