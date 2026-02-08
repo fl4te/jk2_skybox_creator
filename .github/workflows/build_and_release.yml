@@ -1,4 +1,4 @@
-name: Build & Release JK2SkyBoxCreator
+name: Build & Release SkyBox Architect
 
 permissions:
   contents: write
@@ -32,35 +32,35 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build executable
-        run: pyinstaller --clean jk2_skybox_creator.spec
+        run: pyinstaller --clean skybox_architect.spec
 
       - name: Package Windows ZIP
         if: matrix.os == 'windows-latest'
         run: |
           New-Item -ItemType Directory -Force -Path packaged
-          Compress-Archive -Path dist\JK2SkyBoxCreator.exe -DestinationPath packaged\JK2SkyBoxCreator-windows.zip -Force
+          Compress-Archive -Path dist\SkyBoxArchitect.exe -DestinationPath packaged\SkyBoxArchitect-windows.zip -Force
         shell: powershell
 
       - name: Package Linux tar.gz
         if: matrix.os == 'ubuntu-latest'
         run: |
           mkdir -p packaged
-          tar -czvf packaged/JK2SkyBoxCreator-linux.tar.gz -C dist JK2SkyBoxCreator
+          tar -czvf packaged/SkyBoxArchitect-linux.tar.gz -C dist SkyBoxArchitect
         shell: bash
 
       - name: Package macOS DMG
         if: matrix.os == 'macos-latest'
         run: |
-          mkdir -p dmg/JK2SkyBoxCreator.app/Contents/MacOS
-          cp dist/JK2SkyBoxCreator dmg/JK2SkyBoxCreator.app/Contents/MacOS/
+          mkdir -p dmg/SkyBoxArchitect.app/Contents/MacOS
+          cp dist/SkyBoxArchitect dmg/SkyBoxArchitect.app/Contents/MacOS/
           mkdir -p packaged
-          hdiutil create -volname "JK2SkyBoxCreator" -srcfolder dmg -ov -format UDZO packaged/JK2SkyBoxCreator-macos.dmg
+          hdiutil create -volname "SkyBoxArchitect" -srcfolder dmg -ov -format UDZO packaged/SkyBoxArchitect-macos.dmg
         shell: bash
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: JK2SkyBoxCreator-${{ matrix.os }}
+          name: SkyBoxArchitect-${{ matrix.os }}
           path: packaged/*
 
   release:
