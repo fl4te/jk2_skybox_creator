@@ -1,6 +1,6 @@
 # SkyBox Architect
 
-[[![Release](https://img.shields.io/github/v/release/fl4te/skybox_architect?label=latest%20release)](https://github.com/fl4te/skybox_architect/releases) &nbsp;•&nbsp; [![Build Status](https://github.com/fl4te/skybox_architect/actions/workflows/build_and_release.yml/badge.svg?branch=main)](https://github.com/fl4te/skybox_architect/actions/workflows/build_and_release.yml) &nbsp;•&nbsp; [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Release](https://img.shields.io/github/v/release/fl4te/skybox_architect?label=latest%20release)](https://github.com/fl4te/skybox_architect/releases) &nbsp;•&nbsp; [![Build Status](https://github.com/fl4te/skybox_architect/actions/workflows/build_and_release.yml/badge.svg?branch=main)](https://github.com/fl4te/skybox_architect/actions/workflows/build_and_release.yml) &nbsp;•&nbsp; [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **A tool for converting equirectangular panoramas into cubemaps.**
 
