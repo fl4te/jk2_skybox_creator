@@ -4,14 +4,14 @@
 
 **A tool for converting equirectangular panoramas into cubemaps.**
 
-![SkyBox Architect Screenshot](https://i.ibb.co/B2wWfWbj/Bildschirmfoto-20260208-024707.png)
+![SkyBox Architect Screenshot](https://i.imgur.com/moEB3If.png)
 
 ---
 
 ## Features
 
 - **Panorama to Skybox Conversion**: Convert equirectangular (360°) images into 6 cube faces for Q3 based games.
-- **Customizable Output**: Adjust resolution (512, 1024, 2048, 4096), prefix, and orientation (yaw, pitch).
+- **Customizable Output**: Adjust resolution (512, 1024, 2048, 4096), JPG quality, JPG/TGA, prefix, and orientation (yaw, pitch).
 - **Engine-Specific Tweaks**: Flip top/bottom faces and rotate them to match Q3 standards.
 - **Real-Time Preview**: Visualize all 6 faces before exporting.
 
@@ -21,13 +21,16 @@
 
 ### Import a Panorama:
 
-Click "Import Image" and select a 360° equirectangular image (JPG, PNG, TGA).
+Click "Import Panorama" and select a 360° equirectangular image (JPG, PNG, TGA).
 
 
 ### Adjust Settings:
 
 Prefix: Set a name for your skybox files (e.g., my_skybox).
+PK3 Name: Set a name for the PK3
+Format: Choose from JPG/TGA.
 Size: Choose the output resolution (512, 1024, 2048, 4096).
+Quality: Set JPG quality.
 Yaw/Pitch: Fine-tune the horizontal/vertical orientation.
 Flip UP/DN: Toggle to match Q3’s coordinate system.
 Rotate Top/Bottom: Fix orientation issues for top/bottom faces.
@@ -36,7 +39,7 @@ Rotate Top/Bottom: Fix orientation issues for top/bottom faces.
 ### Preview & Export:
 
 Preview all 6 faces in real-time.
-Click "Export" to save the skybox faces to a folder.
+Click "Export .PK3" to export the files into a PK3.
 
 
 ### Output Files
@@ -48,6 +51,8 @@ The tool exports 6 JPG files with the following naming convention:
 <prefix>_rt.jpg  # Right
 <prefix>_up.jpg  # Top
 <prefix>_dn.jpg  # Bottom
+
+Those images are exported into textures/skies/
 ```
 
 ## GitHub Workflow

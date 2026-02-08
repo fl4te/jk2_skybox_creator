@@ -82,7 +82,7 @@ class SkyboxSmartFix(ctk.CTk):
         super().__init__()
         
         self.title("Skybox Architect")
-        self.geometry("1280x850")
+        self.geometry("1280x920")
         
         self.panorama_array = None 
         self.original_image = None 
@@ -95,6 +95,8 @@ class SkyboxSmartFix(ctk.CTk):
         self.prefix_var = ctk.StringVar(value="sky")
         self.pk3_name_var = ctk.StringVar(value="my_skybox")
         self.size_var = ctk.StringVar(value="1024")
+        self.format_var = ctk.StringVar(value="JPG")
+        self.quality_var = ctk.IntVar(value=100)
         self.yaw_offset = ctk.DoubleVar(value=0)
         self.pitch_offset = ctk.DoubleVar(value=0)
         self.flip_up = ctk.BooleanVar(value=True)
@@ -108,7 +110,7 @@ class SkyboxSmartFix(ctk.CTk):
 
         self.sidebar = ctk.CTkFrame(self, width=280, corner_radius=0)
         self.sidebar.grid(row=0, column=0, sticky="nsew")
-        self.sidebar.grid_rowconfigure(10, weight=1) 
+        self.sidebar.grid_rowconfigure(13, weight=1) 
 
         ctk.CTkLabel(self.sidebar, text="SKYBOX ARCHITECT", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=(20, 10))
         ctk.CTkLabel(self.sidebar, text="Equirectangular → Cubemap", font=ctk.CTkFont(size=12)).pack(pady=(0, 20))
@@ -124,6 +126,15 @@ class SkyboxSmartFix(ctk.CTk):
         ctk.CTkLabel(self.sidebar, text="Output Size:", anchor="w").pack(padx=20, pady=(10, 0), fill="x")
         self.size_menu = ctk.CTkOptionMenu(self.sidebar, values=["512", "1024", "2048", "4096"], variable=self.size_var, command=self.trigger_high_res)
         self.size_menu.pack(padx=20, pady=5, fill="x")
+
+        ctk.CTkLabel(self.sidebar, text="File Format:", anchor="w").pack(padx=20, pady=(10, 0), fill="x")
+        self.format_menu = ctk.CTkOptionMenu(self.sidebar, values=["JPG", "TGA"], variable=self.format_var, command=self.toggle_quality_state)
+        self.format_menu.pack(padx=20, pady=5, fill="x")
+
+        self.quality_label = ctk.CTkLabel(self.sidebar, text="JPG Quality: 100", anchor="w")
+        self.quality_label.pack(padx=20, pady=(10, 0), fill="x")
+        self.quality_slider = ctk.CTkSlider(self.sidebar, from_=1, to=100, number_of_steps=99, variable=self.quality_var, command=self.update_quality_label)
+        self.quality_slider.pack(padx=20, pady=5, fill="x")
 
         self.create_separator(self.sidebar, "Orientation")
         
@@ -186,6 +197,21 @@ class SkyboxSmartFix(ctk.CTk):
         f.pack(fill="x", padx=20, pady=5)
         ctk.CTkLabel(f, text=text, width=70, anchor="w").pack(side="left")
         ctk.CTkEntry(f, textvariable=variable).pack(side="left", fill="x", expand=True)
+
+    def toggle_quality_state(self, val):
+        if val == "TGA":
+            self.quality_slider.configure(state="disabled", button_color="#555555")
+            self.quality_label.configure(text_color="#555555")
+        else:
+            self.quality_slider.configure(state="normal", button_color=["#3B8ED0", "#1F6AA5"])
+            self.quality_label.configure(text_color=["gray10", "gray90"])
+            self.update_quality_label(self.quality_var.get())
+
+    def update_quality_label(self, val):
+        if self.format_var.get() == "JPG":
+            self.quality_label.configure(text=f"JPG Quality: {int(val)}")
+        else:
+            self.quality_label.configure(text="Quality: Lossless (TGA)")
 
     def load_image(self):
         path = filedialog.askopenfilename(filetypes=[("Image files", "*.jpg *.jpeg *.png *.tga *.bmp")])
@@ -290,6 +316,10 @@ class SkyboxSmartFix(ctk.CTk):
         
         user_prefix = self.prefix_var.get().strip() or "sky"
         mapping = {"front":"ft", "back":"bk", "left":"lf", "right":"rt", "top":"up", "bottom":"dn"}
+        export_fmt = self.format_var.get()
+        file_ext = ".tga" if export_fmt == "TGA" else ".jpg"
+        pil_fmt = "TGA" if export_fmt == "TGA" else "JPEG"
+        jpg_q = self.quality_var.get()
         
         try:
             self.status_var.set("Compressing to PK3...")
@@ -308,9 +338,12 @@ class SkyboxSmartFix(ctk.CTk):
                             img = img.rotate(-self.face_rotations[face])
                     
                     img_buffer = io.BytesIO()
-                    img.save(img_buffer, format="JPEG", quality=95, subsampling=0)
+                    if pil_fmt == "JPEG":
+                        img.save(img_buffer, format=pil_fmt, quality=jpg_q, subsampling=0)
+                    else:
+                        img.save(img_buffer, format=pil_fmt)
                     
-                    archive_path = f"textures/skies/{user_prefix}_{suffix}.jpg"
+                    archive_path = f"textures/skies/{user_prefix}_{suffix}{file_ext}"
                     zipf.writestr(archive_path, img_buffer.getvalue())
 
             self.progress_bar.stop()
